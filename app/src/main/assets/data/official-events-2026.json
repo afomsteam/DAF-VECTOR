@@ -1,0 +1,688 @@
+[
+  {
+    "id": "2026-01-01-new-year",
+    "title": "New Year's Day",
+    "date": "2026-01-01",
+    "category": "Federal Holiday",
+    "audience": [
+      "ALL"
+    ],
+    "description": "U.S. federal holiday.",
+    "source": "2026 USAF Digital Planner",
+    "verification": "VERIFY OFFICIAL SOURCE"
+  },
+  {
+    "id": "2026-01-08-25e9",
+    "title": "25E9 CMSgt Promotion Results",
+    "date": "2026-01-08",
+    "category": "Promotion",
+    "audience": [
+      "SMSgt",
+      "CMSgt"
+    ],
+    "description": "Public release date shown in the 2026 planner update.",
+    "source": "AFPC public promotion release / 2026 planner",
+    "verification": "VERIFIED THROUGH 11 AUG 2026"
+  },
+  {
+    "id": "2026-01-19-mlk",
+    "title": "Martin Luther King Jr. Day",
+    "date": "2026-01-19",
+    "category": "Federal Holiday",
+    "audience": [
+      "ALL"
+    ],
+    "description": "U.S. federal holiday.",
+    "source": "2026 USAF Digital Planner",
+    "verification": "VERIFY OFFICIAL SOURCE"
+  },
+  {
+    "id": "2026-01-30-smsgt-midterm",
+    "title": "SMSgt Mid-Term ACA",
+    "date": "2026-01-30",
+    "category": "Evaluation",
+    "audience": [
+      "SMSgt"
+    ],
+    "description": "Planning date shown in the 2026 planner update.",
+    "source": "2026 USAF Digital Planner",
+    "verification": "VERIFY myFSS / CURRENT GUIDANCE"
+  },
+  {
+    "id": "2026-01-31-ssgt-scod",
+    "title": "SSgt SCOD",
+    "date": "2026-01-31",
+    "category": "Evaluation",
+    "audience": [
+      "SSgt"
+    ],
+    "description": "Static closeout date shown in the 2026 planner update.",
+    "source": "2026 USAF Digital Planner",
+    "verification": "VERIFY CURRENT DAF GUIDANCE"
+  },
+  {
+    "id": "2026-01-31-tsgt-pecd",
+    "title": "TSgt PECD",
+    "date": "2026-01-31",
+    "category": "Promotion",
+    "audience": [
+      "SSgt"
+    ],
+    "description": "Promotion eligibility cutoff date for the TSgt cycle shown in the 2026 planner update.",
+    "source": "2026 USAF Digital Planner / 36-2502",
+    "verification": "VERIFY myFSS"
+  },
+  {
+    "id": "2026-01-31-cmsgt-acct",
+    "title": "CMSgt Accounting Date",
+    "date": "2026-01-31",
+    "category": "Evaluation",
+    "audience": [
+      "CMSgt"
+    ],
+    "description": "Accounting date shown in the 2026 planner update.",
+    "source": "2026 USAF Digital Planner",
+    "verification": "VERIFY CURRENT DAF GUIDANCE"
+  },
+  {
+    "id": "2026-02-03-cmsgt-acct",
+    "title": "CMSgt / Maj / Lt Col Accounting Date",
+    "date": "2026-02-03",
+    "category": "Evaluation",
+    "audience": [
+      "CMSgt"
+    ],
+    "description": "Accounting date shown in the planner. Officer entries are retained only because they appear in the legacy source; this app is enlisted-focused.",
+    "source": "2026 USAF Digital Planner",
+    "verification": "VERIFY CURRENT DAF GUIDANCE"
+  },
+  {
+    "id": "2026-02-16-presidents",
+    "title": "Washington's Birthday",
+    "date": "2026-02-16",
+    "category": "Federal Holiday",
+    "audience": [
+      "ALL"
+    ],
+    "description": "U.S. federal holiday.",
+    "source": "2026 USAF Digital Planner",
+    "verification": "VERIFY OFFICIAL SOURCE"
+  },
+  {
+    "id": "2026-03-01-capt-midterm",
+    "title": "Capt Mid-Term ACA",
+    "date": "2026-03-01",
+    "category": "Evaluation",
+    "audience": [
+      "ALL"
+    ],
+    "description": "Officer planning item retained from the legacy source for calendar completeness.",
+    "source": "2026 USAF Digital Planner",
+    "verification": "VERIFY CURRENT DAF GUIDANCE"
+  },
+  {
+    "id": "2026-03-05-26e8",
+    "title": "26E8 SMSgt Promotion Results",
+    "date": "2026-03-05",
+    "category": "Promotion",
+    "audience": [
+      "MSgt",
+      "SMSgt"
+    ],
+    "description": "Public release date shown in the 2026 planner update.",
+    "source": "AFPC public promotion release / 2026 planner",
+    "verification": "VERIFIED THROUGH 11 AUG 2026"
+  },
+  {
+    "id": "2026-03-29-vietnam-vets",
+    "title": "National Vietnam War Veterans Day",
+    "date": "2026-03-29",
+    "category": "Observance",
+    "audience": [
+      "ALL"
+    ],
+    "description": "National observance listed in the planner.",
+    "source": "2026 USAF Digital Planner",
+    "verification": "VERIFY OFFICIAL SOURCE"
+  },
+  {
+    "id": "2026-03-31-sra-scod",
+    "title": "SrA & Below SCOD",
+    "date": "2026-03-31",
+    "category": "Evaluation",
+    "audience": [
+      "AB",
+      "Amn",
+      "A1C",
+      "SrA"
+    ],
+    "description": "Static closeout date shown in the 2026 planner update.",
+    "source": "2026 USAF Digital Planner",
+    "verification": "VERIFY CURRENT DAF GUIDANCE"
+  },
+  {
+    "id": "2026-03-31-msgt-midterm",
+    "title": "MSgt Mid-Term ACA",
+    "date": "2026-03-31",
+    "category": "Evaluation",
+    "audience": [
+      "MSgt"
+    ],
+    "description": "Planning date shown in the 2026 planner update.",
+    "source": "2026 USAF Digital Planner",
+    "verification": "VERIFY CURRENT DAF GUIDANCE"
+  },
+  {
+    "id": "2026-03-31-ssgt-pecd",
+    "title": "SSgt PECD",
+    "date": "2026-03-31",
+    "category": "Promotion",
+    "audience": [
+      "SrA"
+    ],
+    "description": "26E5 PECD shown in the 2026 planner update.",
+    "source": "AFPC / 36-2502 / 2026 planner",
+    "verification": "VERIFY myFSS / UNIT TCO"
+  },
+  {
+    "id": "2026-04-01-smsgt-acct",
+    "title": "SMSgt Accounting Date",
+    "date": "2026-04-01",
+    "category": "Evaluation",
+    "audience": [
+      "SMSgt"
+    ],
+    "description": "Accounting date shown in the 2026 planner update.",
+    "source": "2026 USAF Digital Planner",
+    "verification": "VERIFY CURRENT DAF GUIDANCE"
+  },
+  {
+    "id": "2026-04-15-purple-up",
+    "title": "Purple Up! Day",
+    "date": "2026-04-15",
+    "category": "Observance",
+    "audience": [
+      "ALL"
+    ],
+    "description": "Month of the Military Child observance listed in the planner.",
+    "source": "2026 USAF Digital Planner",
+    "verification": "VERIFY LOCAL OBSERVANCE"
+  },
+  {
+    "id": "2026-05-08-spouse",
+    "title": "Military Spouse Appreciation Day",
+    "date": "2026-05-08",
+    "category": "Observance",
+    "audience": [
+      "ALL"
+    ],
+    "description": "Observance listed in the planner.",
+    "source": "2026 USAF Digital Planner",
+    "verification": "VERIFY OFFICIAL SOURCE"
+  },
+  {
+    "id": "2026-05-25-memorial",
+    "title": "Memorial Day",
+    "date": "2026-05-25",
+    "category": "Federal Holiday",
+    "audience": [
+      "ALL"
+    ],
+    "description": "U.S. federal holiday.",
+    "source": "2026 USAF Digital Planner",
+    "verification": "VERIFY OFFICIAL SOURCE"
+  },
+  {
+    "id": "2026-05-31-cmsgt-scod",
+    "title": "CMSgt SCOD",
+    "date": "2026-05-31",
+    "category": "Evaluation",
+    "audience": [
+      "CMSgt"
+    ],
+    "description": "Static closeout date shown in the 2026 planner update.",
+    "source": "2026 USAF Digital Planner",
+    "verification": "VERIFY CURRENT DAF GUIDANCE"
+  },
+  {
+    "id": "2026-05-31-tsgt-midterm",
+    "title": "TSgt Mid-Term ACA",
+    "date": "2026-05-31",
+    "category": "Evaluation",
+    "audience": [
+      "TSgt"
+    ],
+    "description": "Planning date shown in the 2026 planner update.",
+    "source": "2026 USAF Digital Planner",
+    "verification": "VERIFY CURRENT DAF GUIDANCE"
+  },
+  {
+    "id": "2026-06-03-msgt-acct",
+    "title": "MSgt Accounting Date",
+    "date": "2026-06-03",
+    "category": "Evaluation",
+    "audience": [
+      "MSgt"
+    ],
+    "description": "Accounting date shown in the 2026 planner update.",
+    "source": "2026 USAF Digital Planner",
+    "verification": "VERIFY CURRENT DAF GUIDANCE"
+  },
+  {
+    "id": "2026-06-04-26e7",
+    "title": "26E7 MSgt Promotion Results",
+    "date": "2026-06-04",
+    "category": "Promotion",
+    "audience": [
+      "TSgt",
+      "MSgt"
+    ],
+    "description": "Public release date shown in the 2026 planner update.",
+    "source": "AFPC public promotion release / 2026 planner",
+    "verification": "VERIFIED THROUGH 11 AUG 2026"
+  },
+  {
+    "id": "2026-06-19-juneteenth",
+    "title": "Juneteenth",
+    "date": "2026-06-19",
+    "category": "Federal Holiday",
+    "audience": [
+      "ALL"
+    ],
+    "description": "U.S. federal holiday.",
+    "source": "2026 USAF Digital Planner",
+    "verification": "VERIFY OFFICIAL SOURCE"
+  },
+  {
+    "id": "2026-06-25-26e6",
+    "title": "26E6 TSgt Promotion Results",
+    "date": "2026-06-25",
+    "category": "Promotion",
+    "audience": [
+      "SSgt",
+      "TSgt"
+    ],
+    "description": "Public release date shown in the 2026 planner update.",
+    "source": "AFPC public promotion release / 2026 planner",
+    "verification": "VERIFIED THROUGH 11 AUG 2026"
+  },
+  {
+    "id": "2026-07-01-pfa",
+    "title": "Official PFA Testing Resumes Under 2026 Standards",
+    "date": "2026-07-01",
+    "category": "Readiness",
+    "audience": [
+      "ALL"
+    ],
+    "description": "Planner note indicating official PFA testing resumes under 2026 standards.",
+    "source": "2026 USAF Digital Planner",
+    "verification": "VERIFY CURRENT FITNESS GUIDANCE"
+  },
+  {
+    "id": "2026-07-04-independence",
+    "title": "Independence Day",
+    "date": "2026-07-04",
+    "category": "Federal Holiday",
+    "audience": [
+      "ALL"
+    ],
+    "description": "U.S. federal holiday.",
+    "source": "2026 USAF Digital Planner",
+    "verification": "VERIFY OFFICIAL SOURCE"
+  },
+  {
+    "id": "2026-07-31-smsgt-scod",
+    "title": "SMSgt SCOD",
+    "date": "2026-07-31",
+    "category": "Evaluation",
+    "audience": [
+      "SMSgt"
+    ],
+    "description": "Static closeout date shown in the 2026 planner update.",
+    "source": "2026 USAF Digital Planner",
+    "verification": "VERIFY CURRENT DAF GUIDANCE"
+  },
+  {
+    "id": "2026-07-31-ssgt-midterm",
+    "title": "SSgt Mid-Term ACA",
+    "date": "2026-07-31",
+    "category": "Evaluation",
+    "audience": [
+      "SSgt"
+    ],
+    "description": "Planning date shown in the 2026 planner update.",
+    "source": "2026 USAF Digital Planner",
+    "verification": "VERIFY CURRENT DAF GUIDANCE"
+  },
+  {
+    "id": "2026-07-31-cmsgt-pecd",
+    "title": "CMSgt PECD",
+    "date": "2026-07-31",
+    "category": "Promotion",
+    "audience": [
+      "SMSgt"
+    ],
+    "description": "PECD shown in the 2026 planner update.",
+    "source": "2026 USAF Digital Planner / 36-2502",
+    "verification": "VERIFY myFSS"
+  },
+  {
+    "id": "2026-08-03-tsgt-acct",
+    "title": "TSgt Accounting Date",
+    "date": "2026-08-03",
+    "category": "Evaluation",
+    "audience": [
+      "TSgt"
+    ],
+    "description": "Accounting date shown in the 2026 planner update.",
+    "source": "2026 USAF Digital Planner",
+    "verification": "VERIFY CURRENT DAF GUIDANCE"
+  },
+  {
+    "id": "2026-08-13-26e5",
+    "title": "26E5 SSgt Promotion Results",
+    "date": "2026-08-13",
+    "category": "Promotion",
+    "audience": [
+      "SrA",
+      "SSgt"
+    ],
+    "description": "Public release date shown in the 2026 planner update.",
+    "source": "AFPC public promotion release / 2026 planner",
+    "verification": "VERIFIED THROUGH 11 AUG 2026"
+  },
+  {
+    "id": "2026-08-26-womens-equality",
+    "title": "Women's Equality Day",
+    "date": "2026-08-26",
+    "category": "Observance",
+    "audience": [
+      "ALL"
+    ],
+    "description": "Observance listed in the planner.",
+    "source": "2026 USAF Digital Planner",
+    "verification": "VERIFY OFFICIAL SOURCE"
+  },
+  {
+    "id": "2026-08-28-col-midterm",
+    "title": "Col Mid-Term ACA",
+    "date": "2026-08-28",
+    "category": "Evaluation",
+    "audience": [
+      "ALL"
+    ],
+    "description": "Officer planning item retained from the legacy source for calendar completeness.",
+    "source": "2026 USAF Digital Planner",
+    "verification": "VERIFY CURRENT DAF GUIDANCE"
+  },
+  {
+    "id": "2026-08-31-capt-scod",
+    "title": "Capt SCOD",
+    "date": "2026-08-31",
+    "category": "Evaluation",
+    "audience": [
+      "ALL"
+    ],
+    "description": "Officer planning item retained from the legacy source for calendar completeness.",
+    "source": "2026 USAF Digital Planner",
+    "verification": "VERIFY CURRENT DAF GUIDANCE"
+  },
+  {
+    "id": "2026-09-07-labor",
+    "title": "Labor Day",
+    "date": "2026-09-07",
+    "category": "Federal Holiday",
+    "audience": [
+      "ALL"
+    ],
+    "description": "U.S. federal holiday.",
+    "source": "2026 USAF Digital Planner",
+    "verification": "VERIFY OFFICIAL SOURCE"
+  },
+  {
+    "id": "2026-09-11-patriot",
+    "title": "Patriot Day",
+    "date": "2026-09-11",
+    "category": "Observance",
+    "audience": [
+      "ALL"
+    ],
+    "description": "Observance listed in the planner.",
+    "source": "2026 USAF Digital Planner",
+    "verification": "VERIFY OFFICIAL SOURCE"
+  },
+  {
+    "id": "2026-09-18-powmia",
+    "title": "National POW/MIA Recognition Day",
+    "date": "2026-09-18",
+    "category": "Observance",
+    "audience": [
+      "ALL"
+    ],
+    "description": "Observance listed in the planner.",
+    "source": "2026 USAF Digital Planner",
+    "verification": "VERIFY OFFICIAL SOURCE"
+  },
+  {
+    "id": "2026-09-29-sra-midterm",
+    "title": "SrA & Below Mid-Term ACA",
+    "date": "2026-09-29",
+    "category": "Evaluation",
+    "audience": [
+      "AB",
+      "Amn",
+      "A1C",
+      "SrA"
+    ],
+    "description": "Planning date shown in the 2026 planner update.",
+    "source": "2026 USAF Digital Planner",
+    "verification": "VERIFY CURRENT DAF GUIDANCE"
+  },
+  {
+    "id": "2026-09-30-msgt-scod",
+    "title": "MSgt SCOD",
+    "date": "2026-09-30",
+    "category": "Evaluation",
+    "audience": [
+      "MSgt"
+    ],
+    "description": "Static closeout date shown in the 2026 planner update.",
+    "source": "2026 USAF Digital Planner",
+    "verification": "VERIFY CURRENT DAF GUIDANCE"
+  },
+  {
+    "id": "2026-09-30-smsgt-pecd",
+    "title": "SMSgt PECD",
+    "date": "2026-09-30",
+    "category": "Promotion",
+    "audience": [
+      "MSgt"
+    ],
+    "description": "PECD shown in the 2026 planner update.",
+    "source": "2026 USAF Digital Planner / 36-2502",
+    "verification": "VERIFY myFSS"
+  },
+  {
+    "id": "2026-10-03-ssgt-acct",
+    "title": "SSgt Accounting Date",
+    "date": "2026-10-03",
+    "category": "Evaluation",
+    "audience": [
+      "SSgt"
+    ],
+    "description": "Accounting date shown in the 2026 planner update.",
+    "source": "2026 USAF Digital Planner",
+    "verification": "VERIFY CURRENT DAF GUIDANCE"
+  },
+  {
+    "id": "2026-10-12-columbus",
+    "title": "Columbus Day",
+    "date": "2026-10-12",
+    "category": "Federal Holiday",
+    "audience": [
+      "ALL"
+    ],
+    "description": "Federal holiday label retained exactly from the 2026 planner source.",
+    "source": "2026 USAF Digital Planner",
+    "verification": "VERIFY OFFICIAL SOURCE"
+  },
+  {
+    "id": "2026-10-13-navy",
+    "title": "U.S. Navy Birthday",
+    "date": "2026-10-13",
+    "category": "Observance",
+    "audience": [
+      "ALL"
+    ],
+    "description": "Service birthday listed in the planner.",
+    "source": "2026 USAF Digital Planner",
+    "verification": "VERIFY OFFICIAL SOURCE"
+  },
+  {
+    "id": "2026-10-31-lt-scod",
+    "title": "2Lt / 1Lt SCOD",
+    "date": "2026-10-31",
+    "category": "Evaluation",
+    "audience": [
+      "ALL"
+    ],
+    "description": "Officer planning item retained from the legacy source for calendar completeness.",
+    "source": "2026 USAF Digital Planner",
+    "verification": "VERIFY CURRENT DAF GUIDANCE"
+  },
+  {
+    "id": "2026-11-03-col-acct",
+    "title": "Col Accounting Date",
+    "date": "2026-11-03",
+    "category": "Evaluation",
+    "audience": [
+      "ALL"
+    ],
+    "description": "Officer planning item retained from the legacy source for calendar completeness.",
+    "source": "2026 USAF Digital Planner",
+    "verification": "VERIFY CURRENT DAF GUIDANCE"
+  },
+  {
+    "id": "2026-11-11-veterans",
+    "title": "Veterans Day",
+    "date": "2026-11-11",
+    "category": "Federal Holiday",
+    "audience": [
+      "ALL"
+    ],
+    "description": "U.S. federal holiday.",
+    "source": "2026 USAF Digital Planner",
+    "verification": "VERIFY OFFICIAL SOURCE"
+  },
+  {
+    "id": "2026-11-26-thanksgiving",
+    "title": "Thanksgiving Day",
+    "date": "2026-11-26",
+    "category": "Federal Holiday",
+    "audience": [
+      "ALL"
+    ],
+    "description": "U.S. federal holiday.",
+    "source": "2026 USAF Digital Planner",
+    "verification": "VERIFY OFFICIAL SOURCE"
+  },
+  {
+    "id": "2026-11-29-cmsgt-midterm",
+    "title": "CMSgt / Maj / Lt Col Mid-Term ACA",
+    "date": "2026-11-29",
+    "category": "Evaluation",
+    "audience": [
+      "CMSgt"
+    ],
+    "description": "Planning date shown in the 2026 planner update.",
+    "source": "2026 USAF Digital Planner",
+    "verification": "VERIFY CURRENT DAF GUIDANCE"
+  },
+  {
+    "id": "2026-11-30-tsgt-scod",
+    "title": "TSgt SCOD",
+    "date": "2026-11-30",
+    "category": "Evaluation",
+    "audience": [
+      "TSgt"
+    ],
+    "description": "Static closeout date shown in the 2026 planner update.",
+    "source": "2026 USAF Digital Planner",
+    "verification": "VERIFY CURRENT DAF GUIDANCE"
+  },
+  {
+    "id": "2026-11-30-msgt-pecd",
+    "title": "MSgt PECD",
+    "date": "2026-11-30",
+    "category": "Promotion",
+    "audience": [
+      "TSgt"
+    ],
+    "description": "PECD shown in the 2026 planner update.",
+    "source": "2026 USAF Digital Planner / 36-2502",
+    "verification": "VERIFY myFSS"
+  },
+  {
+    "id": "2026-12-03-sra-acct",
+    "title": "SrA & Below Accounting Date",
+    "date": "2026-12-03",
+    "category": "Evaluation",
+    "audience": [
+      "AB",
+      "Amn",
+      "A1C",
+      "SrA"
+    ],
+    "description": "Accounting date shown in the 2026 planner update.",
+    "source": "2026 USAF Digital Planner",
+    "verification": "VERIFY CURRENT DAF GUIDANCE"
+  },
+  {
+    "id": "2026-12-07-pearl",
+    "title": "Pearl Harbor Remembrance Day",
+    "date": "2026-12-07",
+    "category": "Observance",
+    "audience": [
+      "ALL"
+    ],
+    "description": "Observance listed in the planner.",
+    "source": "2026 USAF Digital Planner",
+    "verification": "VERIFY OFFICIAL SOURCE"
+  },
+  {
+    "id": "2026-12-13-guard",
+    "title": "U.S. National Guard Birthday",
+    "date": "2026-12-13",
+    "category": "Observance",
+    "audience": [
+      "ALL"
+    ],
+    "description": "Service birthday listed in the planner.",
+    "source": "2026 USAF Digital Planner",
+    "verification": "VERIFY OFFICIAL SOURCE"
+  },
+  {
+    "id": "2026-12-20-spaceforce",
+    "title": "U.S. Space Force Birthday",
+    "date": "2026-12-20",
+    "category": "Observance",
+    "audience": [
+      "ALL"
+    ],
+    "description": "Service birthday listed in the planner.",
+    "source": "2026 USAF Digital Planner",
+    "verification": "VERIFY OFFICIAL SOURCE"
+  },
+  {
+    "id": "2026-12-25-christmas",
+    "title": "Christmas Day",
+    "date": "2026-12-25",
+    "category": "Federal Holiday",
+    "audience": [
+      "ALL"
+    ],
+    "description": "U.S. federal holiday.",
+    "source": "2026 USAF Digital Planner",
+    "verification": "VERIFY OFFICIAL SOURCE"
+  }
+]

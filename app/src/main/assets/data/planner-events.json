@@ -1,0 +1,90 @@
+[
+  {
+    "id": "25e9-results-2026",
+    "title": "25E9 CMSgt Promotion Results",
+    "date": "2026-01-08",
+    "type": "PROMOTION_RELEASE",
+    "category": "PROMOTION",
+    "audience": ["SMSgt", "CMSgt"],
+    "source": "2026 USAF Digital Planner - public-source update through 11 Aug 2026",
+    "verificationStatus": "VERIFIED",
+    "lastVerified": "2026-08-11"
+  },
+  {
+    "id": "26e8-results-2026",
+    "title": "26E8 SMSgt Promotion Results",
+    "date": "2026-03-05",
+    "type": "PROMOTION_RELEASE",
+    "category": "PROMOTION",
+    "audience": ["MSgt", "SMSgt"],
+    "source": "2026 USAF Digital Planner - public-source update through 11 Aug 2026",
+    "verificationStatus": "VERIFIED",
+    "lastVerified": "2026-08-11"
+  },
+  {
+    "id": "26e7-results-2026",
+    "title": "26E7 MSgt Promotion Results",
+    "date": "2026-06-04",
+    "type": "PROMOTION_RELEASE",
+    "category": "PROMOTION",
+    "audience": ["TSgt", "MSgt"],
+    "source": "2026 USAF Digital Planner - public-source update through 11 Aug 2026",
+    "verificationStatus": "VERIFIED",
+    "lastVerified": "2026-08-11"
+  },
+  {
+    "id": "26e6-results-2026",
+    "title": "26E6 TSgt Promotion Results",
+    "date": "2026-06-25",
+    "type": "PROMOTION_RELEASE",
+    "category": "PROMOTION",
+    "audience": ["SSgt", "TSgt"],
+    "source": "2026 USAF Digital Planner - public-source update through 11 Aug 2026",
+    "verificationStatus": "VERIFIED",
+    "lastVerified": "2026-08-11"
+  },
+  {
+    "id": "26e5-results-2026",
+    "title": "26E5 SSgt Promotion Results",
+    "date": "2026-08-13",
+    "type": "PROMOTION_RELEASE",
+    "category": "PROMOTION",
+    "audience": ["SrA", "SSgt"],
+    "source": "2026 USAF Digital Planner - public-source update through 11 Aug 2026",
+    "verificationStatus": "VERIFIED",
+    "lastVerified": "2026-08-11"
+  },
+  {
+    "id": "msgt-scod-2026",
+    "title": "MSgt SCOD",
+    "date": "2026-09-30",
+    "type": "SCOD",
+    "category": "EVALUATION",
+    "audience": ["MSgt"],
+    "source": "2026 USAF Digital Planner",
+    "verificationStatus": "VERIFY_MYFSS",
+    "lastVerified": "2026-08-11"
+  },
+  {
+    "id": "smsgt-pecd-2026",
+    "title": "SMSgt PECD",
+    "date": "2026-09-30",
+    "type": "PECD",
+    "category": "PROMOTION",
+    "audience": ["MSgt"],
+    "source": "2026 USAF Digital Planner",
+    "verificationStatus": "VERIFY_MYFSS",
+    "lastVerified": "2026-08-11"
+  },
+  {
+    "id": "26e9-board-2026",
+    "title": "26E9 Board Cycle",
+    "date": null,
+    "type": "PROMOTION_BOARD",
+    "category": "PROMOTION",
+    "audience": ["SMSgt"],
+    "source": "2026 USAF Digital Planner",
+    "verificationStatus": "VERIFY_MYFSS",
+    "lastVerified": "2026-08-11"
+  }
+]

@@ -1,0 +1,4 @@
+[
+  {"id":"myfss","title":"myFSS","status":"OFFICIAL_SYSTEM","note":"Use for authoritative personnel verification when applicable."},
+  {"id":"myvector","title":"MyVector","status":"OFFICIAL_SYSTEM","note":"Use for current assignment and talent management information when applicable."}
+]

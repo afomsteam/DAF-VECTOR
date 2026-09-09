@@ -1,0 +1,34 @@
+[
+  {
+    "id": "evaluation",
+    "title": "Evaluations & ALQs",
+    "category": "Evaluation",
+    "summary": "The planner organizes Airman Leadership Qualities under four Major Graded Areas: Executing the Mission, Leading People, Managing Resources, and Improving the Unit. Use the accomplishment capture tool to document what you did, how you did it, and why the result mattered.",
+    "source": "2026 USAF Digital Planner; current evaluation guidance should be verified",
+    "verification": "VERIFY CURRENT 36-2406 / myFSS GUIDANCE"
+  },
+  {
+    "id": "promotion",
+    "title": "Enlisted Promotions",
+    "category": "Promotion",
+    "summary": "The planner includes WAPS and SNCO promotion cycle information, PECDs, public release dates, record-review reminders, and the Whole Person Concept. Testing windows and member-specific eligibility can change.",
+    "source": "2026 USAF Digital Planner; 36-2502; AFPC public promotion releases",
+    "verification": "VERIFY UNIT TCO / myFSS"
+  },
+  {
+    "id": "development",
+    "title": "Enlisted Development",
+    "category": "Development",
+    "summary": "Use the Brown Book, Enlisted Force Structure, Blueprint, PME, education, mentorship, and deliberate development goals to plan growth beyond the next evaluation cycle.",
+    "source": "2026 USAF Digital Planner",
+    "verification": "VERIFY CURRENT DAF PUBLICATIONS"
+  },
+  {
+    "id": "records",
+    "title": "Record Review",
+    "category": "Promotion",
+    "summary": "Periodically review your records, decorations, career data, performance history, and promotion information. The planner emphasizes documenting performance and seeking feedback from senior enlisted leaders.",
+    "source": "2026 USAF Digital Planner",
+    "verification": "VERIFY OFFICIAL PERSONNEL RECORDS"
+  }
+]
