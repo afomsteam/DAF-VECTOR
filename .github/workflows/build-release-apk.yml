@@ -1,0 +1,56 @@
+name: Build Enlisted Planner V2 Full Release APK (Unsigned)
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build-release:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Set up Java 17
+        uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: Set up Gradle 8.9
+        uses: gradle/actions/setup-gradle@v6
+        with:
+          gradle-version: "8.9"
+
+      - name: Set up Android SDK 35
+        uses: android-actions/setup-android@v4
+        with:
+          packages: "platform-tools platforms;android-35 build-tools;35.0.0"
+          accept-android-sdk-licenses: true
+          log-accepted-android-sdk-licenses: false
+
+      - name: Verify capability routes and privacy boundary
+        run: python3 scripts/verify_source.py
+
+      - name: Build unsigned release APK
+        run: gradle --no-daemon :app:assembleRelease
+
+      - name: Prepare release APK and checksum
+        run: |
+          mkdir -p dist
+          cp app/build/outputs/apk/release/app-release-unsigned.apk dist/Enlisted-Planner-V2-Full-release-unsigned.apk
+          sha256sum dist/Enlisted-Planner-V2-Full-release-unsigned.apk > dist/Enlisted-Planner-V2-Full-release-unsigned.apk.sha256
+
+      - name: Upload release artifact
+        uses: actions/upload-artifact@v6
+        with:
+          name: Enlisted-Planner-V2-Full-release-unsigned
+          path: |
+            dist/Enlisted-Planner-V2-Full-release-unsigned.apk
+            dist/Enlisted-Planner-V2-Full-release-unsigned.apk.sha256
+          if-no-files-found: error
+          retention-days: 30
