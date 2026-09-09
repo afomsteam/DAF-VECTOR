@@ -50,15 +50,15 @@ jobs:
       - name: Prepare APK and checksum
         run: |
           mkdir -p dist
-          cp app/build/outputs/apk/debug/app-debug.apk dist/Enlisted-Planner-V2-Full.apk
-          sha256sum dist/Enlisted-Planner-V2-Full.apk > dist/Enlisted-Planner-V2-Full.apk.sha256
+          cp app/build/outputs/apk/debug/app-debug.apk dist/Enlisted-Planner-V2-Full-v3.apk
+          sha256sum dist/Enlisted-Planner-V2-Full-v3.apk > dist/Enlisted-Planner-V2-Full-v3.apk.sha256
 
       - name: Upload APK artifact
         uses: actions/upload-artifact@v6
         with:
-          name: Enlisted-Planner-V2-Full
+          name: Enlisted-Planner-V2-Full-v3
           path: |
-            dist/Enlisted-Planner-V2-Full.apk
-            dist/Enlisted-Planner-V2-Full.apk.sha256
+            dist/Enlisted-Planner-V2-Full-v3.apk
+            dist/Enlisted-Planner-V2-Full-v3.apk.sha256
           if-no-files-found: error
           retention-days: 30
