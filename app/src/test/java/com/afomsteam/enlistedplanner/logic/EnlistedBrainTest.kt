@@ -79,11 +79,28 @@ class EnlistedBrainTest {
         )
         val signals = EnlistedBrain.signals(
             PlannerState(team = listOf(member)),
-            LocalDate.of(2026, 9, 1)
+            LocalDate.of(2026, 10, 15)
         )
         val feedback = signals.firstOrNull { it.id == "feedback-m1" }
         assertNotNull(feedback)
         assertEquals(Severity.CRITICAL, feedback!!.severity)
+    }
+
+    @Test
+    fun feedbackCalculatorUsesLastScodPlusSixMonths() {
+        assertEquals(LocalDate.of(2026, 9, 30), EvaluationRules.feedbackDueFromScod(LocalDate.of(2026, 3, 31)))
+        assertEquals(LocalDate.of(2026, 7, 31), EvaluationRules.feedbackDueFromScod(LocalDate.of(2026, 1, 31)))
+    }
+
+    @Test
+    fun pfraChartKnownValuesMatchUploaded2026Chart() {
+        assertEquals(20.0, PfraScoring.whtrPoints(0.49), 0.001)
+        assertEquals(12.5, PfraScoring.whtrPoints(0.55), 0.001)
+        assertEquals(0.0, PfraScoring.whtrPoints(0.60), 0.001)
+        assertEquals(15.0, PfraScoring.score(PfraEvent.PUSH_UP, 24, PfraSex.MALE, 67), 0.001)
+        assertEquals(50.0, PfraScoring.score(PfraEvent.TWO_MILE_RUN, 24, PfraSex.MALE, 13*60+25), 0.001)
+        assertEquals(50.0, PfraScoring.score(PfraEvent.HAMR, 24, PfraSex.MALE, 87), 0.001)
+        assertEquals(16*60+16, PfraScoring.walkMaxSeconds(24, PfraSex.MALE))
     }
 
     @Test
