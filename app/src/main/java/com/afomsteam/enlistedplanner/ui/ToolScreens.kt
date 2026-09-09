@@ -40,7 +40,7 @@ fun ToolScreen(name: String, vm: PlannerViewModel, modifier: Modifier, onOpen: (
         "Upgrade Training" -> UpgradeTrainingTool(vm, modifier, onOpen)
         "Qualifications" -> QualificationsTool(vm, modifier, onOpen)
         "Life Planning" -> LifePlanningTool(vm, modifier)
-        "Helping Resources" -> HelpingResourcesTool(modifier)
+        "Helping Resources" -> HelpingResourcesTool(vm, modifier)
         "Financial Readiness" -> FinancialReadinessTool(vm, modifier)
         "Programs & Projects" -> ProgramsTool(vm, modifier)
         "Force Management" -> ForceManagementTool(vm, modifier)
@@ -128,25 +128,34 @@ private fun PromotionAssessmentCard(a: PromotionAssessment) {
 @Composable
 private fun EvaluationTool(vm: PlannerViewModel, modifier: Modifier, onOpen: (String) -> Unit) {
     val today = LocalDate.now()
-    ToolBody(modifier, "Evaluation & Feedback", "SCOD visibility, feedback planning markers and performance evidence") {
+    var calcGrade by remember { mutableStateOf(vm.state.profile.grade) }
+    var lastScod by remember(calcGrade) { mutableStateOf(EvaluationRules.lastScod(calcGrade, today).toString()) }
+    val selectedScod = Dates.parse(lastScod)
+    val calculatedFeedback = selectedScod?.let { EvaluationRules.feedbackDueFromScod(it) }
+    ToolBody(modifier, "Evaluation & Feedback", "SCOD visibility plus a simple last-SCOD + 6-month feedback calculator") {
+        SectionTitle("Feedback calculator")
+        DropdownField("Grade", calcGrade, Grade.entries, { it.label }, { calcGrade = it; lastScod = EvaluationRules.lastScod(it, today).toString() })
+        LabeledField("Last SCOD", lastScod, { lastScod = it })
+        PlannerCard {
+            Text("Calculated feedback due", fontWeight = FontWeight.Bold)
+            Text(calculatedFeedback?.let { Dates.display(it.toString()) } ?: "Select a valid SCOD", style = MaterialTheme.typography.titleLarge)
+            Text("Planner rule: last SCOD + 6 months. Initial feedback and ARC/status-specific requirements still require separate review.", color = TextMuted)
+        }
         if (vm.state.profile.component == Component.REGAF) {
             val selfScod = EvaluationRules.nextScod(vm.state.profile.grade, today)
-            PlannerCard { Text("Your ${vm.state.profile.grade.label} SCOD", fontWeight = FontWeight.Bold); Text(Dates.display(selfScod.toString()), style = MaterialTheme.typography.titleLarge); Text("${java.time.temporal.ChronoUnit.DAYS.between(today, selfScod)} days away", color = TextMuted) }
-        } else {
-            PlannerCard { Text("ARC evaluation cycle", fontWeight = FontWeight.Bold); Text("Verify status-specific SCOD", style = MaterialTheme.typography.titleMedium); Text("AFR/ANG SCOD cadence depends on status and cycle. This app does not assume RegAF timing for ARC members.", color = TextMuted) }
+            PlannerCard { Text("Your next ${vm.state.profile.grade.label} SCOD", fontWeight = FontWeight.Bold); Text(Dates.display(selfScod.toString()), style = MaterialTheme.typography.titleLarge) }
         }
         SectionTitle("Airmen")
-        if (vm.state.team.isEmpty()) EmptyState("No Airmen", "Add supervised Airmen to calculate their next feedback planning marker and SCOD.")
+        if (vm.state.team.isEmpty()) EmptyState("No Airmen", "Add supervised Airmen to calculate their feedback planning marker and SCOD.")
         vm.state.team.forEach { m ->
-            val f = EvaluationRules.nextFeedbackPlanningDate(m, today)
-            val scod = if (m.component == Component.REGAF) EvaluationRules.nextScod(m.grade, today) else null
+            val scod = if (m.component == Component.REGAF) EvaluationRules.lastScod(m.grade, today) else null
+            val due = scod?.let { EvaluationRules.feedbackDueFromScod(it) }
             PlannerCard(onClick = { onOpen("member:${m.id}") }) {
                 Text("${m.grade.label} ${m.name}", fontWeight = FontWeight.Bold)
-                Text("Feedback: ${f.first?.let { Dates.display(it.toString()) } ?: "Need supervision start/last feedback"}", color = TextMuted)
-                Text("SCOD: ${scod?.let { Dates.display(it.toString()) } ?: "Verify ARC status-specific cycle"}", color = TextMuted)
+                Text("Last SCOD: ${scod?.let { Dates.display(it.toString()) } ?: "Verify ARC cycle"}", color = TextMuted)
+                Text("Feedback: ${due?.let { Dates.display(it.toString()) } ?: "Verify ARC/status-specific timing"}", color = TextMuted)
             }
         }
-        PlannerCard { Text("Feedback timing", fontWeight = FontWeight.Bold); Text("Planning cues use the recorded supervision start, initial 60-day requirement, junior-Airman 180-day cadence when applicable, projected midterm, and end-of-reporting-period window. Verify current requirements, CROs, status-specific ARC cycles, and exceptions in official evaluation guidance.", color = TextMuted) }
     }
 }
 
@@ -237,39 +246,59 @@ private fun StudyPlanTool(vm: PlannerViewModel, modifier: Modifier) {
 
 @Composable
 private fun ProHandsTool(modifier: Modifier) {
-    val refs = listOf(
-        Triple("Evaluations, EPBs, feedback", "AFI 36-2406", "Evaluation system starting point; verify current publication and myFSS implementation guidance."),
-        Triple("Enlisted promotion / BTZ", "AFI 36-2502", "Promotion and demotion starting point; verify current cycle messages, PECD and member eligibility."),
-        Triple("Awards and decorations", "DAFI 36-2803", "Recognition program starting point; verify current supplements and award-specific guidance."),
-        Triple("Dress and appearance", "DAFI 36-2903", "Uniform and appearance reference; verify current version and local guidance."),
-        Triple("Assignments", "DAFI 36-2110", "Assignment system starting point; use MyVector/myFSS for member-specific actions."),
-        Triple("Reenlistment / extensions", "DAFI 36-2606", "Retention reference starting point; verify current eligibility and MPF guidance."),
-        Triple("Leave", "DAFI 36-3003", "Military leave program reference; verify current version and unit procedures."),
-        Triple("Fitness", "Current DAF fitness guidance", "Use current official PFRA publication and scoring charts rather than a stored stale table."),
-        Triple("Education / CCAF", "myFSS / Air University / CCAF", "Use current official education and credential guidance for irreversible decisions."),
-        Triple("Not sure where to start", "myFSS / CSS / MPF / supervisor", "Use this map to find the likely lane, then verify in the controlling official source.")
-    )
-    ToolBody(modifier, "Pro Hands", "Find the right professional reference without remembering which publication covers the issue") {
-        refs.forEach { (need, ref, note) -> PlannerCard { Text(need, fontWeight = FontWeight.Bold); Text(ref, color = AirBlue); Text(note, color = TextMuted, modifier = Modifier.padding(top = 4.dp)) } }
-        PlannerCard { Text("Reference hygiene", fontWeight = FontWeight.Bold); Text("Publication numbers and titles can change. Treat Pro Hands as a routing map, not a frozen policy library. Verify the current e-Publishing/myFSS source before official action.", color = TextMuted) }
+    val context = LocalContext.current
+    var query by remember { mutableStateOf("") }
+    val refs = PlannerGuidance.professionalRefs.filter { query.isBlank() || it.area.contains(query, true) || it.reference.contains(query, true) }
+    ToolBody(modifier, "Professional Resources", "Planner page 85 restored as a searchable professional-reference map") {
+        LabeledField("Search references", query, { query = it }, "evaluations, protocol, housing...")
+        refs.groupBy { it.area }.forEach { (area, items) ->
+            SectionTitle(area)
+            items.forEach { ref ->
+                PlannerCard {
+                    Text(ref.reference, fontWeight = FontWeight.Bold)
+                    if (ref.note.isNotBlank()) Text(ref.note, color = TextMuted)
+                    if (ref.url.isNotBlank()) TextButton(onClick = { runCatching { context.startActivity(Intent(Intent.ACTION_VIEW, android.net.Uri.parse(ref.url))) } }) { Text("Open official site") }
+                }
+            }
+        }
+        PlannerCard { Text("Reference hygiene", fontWeight = FontWeight.Bold); Text("Use this as a routing map. Publication numbers and implementation guidance can change; verify current e-Publishing/myFSS sources before official action.", color = TextMuted) }
     }
 }
 
 @Composable
 private fun FitnessTool(vm: PlannerViewModel, modifier: Modifier) {
     val f = vm.state.fitness
-    val whtr = if (f.heightInches > 0 && f.waistInches > 0) f.waistInches / f.heightInches else 0.0
-    val total = f.cardioPoints + f.strengthPoints + f.corePoints + f.bodyCompositionPoints
-    ToolBody(modifier, "Fitness", "Track the next PFRA and your current official component points without pretending this replaces the scoring chart") {
+    val sex = if (f.sex.equals("Female", true)) PfraSex.FEMALE else PfraSex.MALE
+    val strengthEvent = if (f.strengthEvent == "Hand-release push-up") PfraEvent.HAND_RELEASE_PUSH_UP else PfraEvent.PUSH_UP
+    val coreEvent = when(f.coreEvent) { "Cross-leg reverse crunch" -> PfraEvent.CROSS_LEG_REVERSE_CRUNCH; "Forearm plank" -> PfraEvent.FOREARM_PLANK; else -> PfraEvent.SIT_UP }
+    val cardioEvent = if (f.cardioEvent == "20-meter HAMR") PfraEvent.HAMR else PfraEvent.TWO_MILE_RUN
+    fun raw(event:PfraEvent, value:String): Int? = if (event == PfraEvent.FOREARM_PLANK || event == PfraEvent.TWO_MILE_RUN) PfraScoring.parseTime(value) else value.toIntOrNull()
+    val strengthPts = raw(strengthEvent, f.strengthRaw)?.let { PfraScoring.score(strengthEvent, f.age, sex, it) } ?: 0.0
+    val corePts = raw(coreEvent, f.coreRaw)?.let { PfraScoring.score(coreEvent, f.age, sex, it) } ?: 0.0
+    val cardioPts = raw(cardioEvent, f.cardioRaw)?.let { PfraScoring.score(cardioEvent, f.age, sex, it) } ?: 0.0
+    val ratio = PfraScoring.whtr(f.heightInches, f.waistInches)
+    val bodyPts = if (ratio > 0) PfraScoring.whtrPoints(ratio) else 0.0
+    val total = strengthPts + corePts + cardioPts + bodyPts
+    ToolBody(modifier, "Fitness Calculator", "Age/sex scoring from the Final USAF PFRA chart effective 1 Mar 2026, including WHtR") {
+        LabeledField("Age", f.age.toString(), { v -> v.toIntOrNull()?.let { n -> vm.update { it.copy(fitness = it.fitness.copy(age=n.coerceAtLeast(17))) } } })
+        DropdownField("Sex", f.sex, listOf("Male","Female"), { it }, { v -> vm.update { it.copy(fitness=it.fitness.copy(sex=v)) } })
+        PlannerCard { Text("Age band", fontWeight=FontWeight.Bold); Text(PfraScoring.ageBandLabel(f.age), color=SoftBlue) }
+        SectionTitle("Body composition — WHtR")
         LabeledField("Height (inches)", f.heightInches.toString(), { v -> v.toDoubleOrNull()?.let { n -> vm.update { it.copy(fitness = it.fitness.copy(heightInches=n)) } } })
         LabeledField("Waist (inches)", f.waistInches.toString(), { v -> v.toDoubleOrNull()?.let { n -> vm.update { it.copy(fitness = it.fitness.copy(waistInches=n)) } } })
-        if (whtr > 0) PlannerCard { Text("Waist-to-height ratio", fontWeight=FontWeight.Bold); Text(String.format("%.3f", whtr), style=MaterialTheme.typography.headlineSmall); Text("Use current official DAF guidance for interpretation and body-composition scoring.", color=TextMuted) }
-        LabeledField("Cardio points", f.cardioPoints.toString(), { v -> v.toDoubleOrNull()?.let { n -> vm.update { it.copy(fitness = it.fitness.copy(cardioPoints=n)) } } })
-        LabeledField("Strength points", f.strengthPoints.toString(), { v -> v.toDoubleOrNull()?.let { n -> vm.update { it.copy(fitness = it.fitness.copy(strengthPoints=n)) } } })
-        LabeledField("Core points", f.corePoints.toString(), { v -> v.toDoubleOrNull()?.let { n -> vm.update { it.copy(fitness = it.fitness.copy(corePoints=n)) } } })
-        LabeledField("Body-composition points", f.bodyCompositionPoints.toString(), { v -> v.toDoubleOrNull()?.let { n -> vm.update { it.copy(fitness = it.fitness.copy(bodyCompositionPoints=n)) } } })
-        LabeledField("Next PFRA", f.nextPfraDate, { v -> vm.update { it.copy(fitness = it.fitness.copy(nextPfraDate=v)) } })
-        PlannerCard { Text("Recorded total", fontWeight=FontWeight.Bold); Text(String.format("%.1f / 100", total), style=MaterialTheme.typography.headlineMedium); Text("Enter points from the current official scoring chart. This prevents stale age/sex tables from silently producing the wrong score.", color=TextMuted) }
+        if (ratio > 0) PlannerCard { Text("WHtR ${String.format("%.2f", ratio)}", fontWeight=FontWeight.Bold); Text("${String.format("%.1f", bodyPts)} / 20 points • ${PfraScoring.whtrRisk(ratio)}", color=TextMuted) }
+        SectionTitle("Strength")
+        DropdownField("Strength event", f.strengthEvent, listOf("Push-up","Hand-release push-up"), { it }, { v -> vm.update { it.copy(fitness=it.fitness.copy(strengthEvent=v)) } })
+        LabeledField("Strength reps", f.strengthRaw, { v -> vm.update { it.copy(fitness=it.fitness.copy(strengthRaw=v)) } })
+        SectionTitle("Core")
+        DropdownField("Core event", f.coreEvent, listOf("Sit-up","Cross-leg reverse crunch","Forearm plank"), { it }, { v -> vm.update { it.copy(fitness=it.fitness.copy(coreEvent=v)) } })
+        LabeledField(if(f.coreEvent=="Forearm plank") "Core time (m:ss)" else "Core reps", f.coreRaw, { v -> vm.update { it.copy(fitness=it.fitness.copy(coreRaw=v)) } })
+        SectionTitle("Cardio")
+        DropdownField("Cardio event", f.cardioEvent, listOf("2-mile run","20-meter HAMR"), { it }, { v -> vm.update { it.copy(fitness=it.fitness.copy(cardioEvent=v)) } })
+        LabeledField(if(f.cardioEvent=="2-mile run") "2-mile time (m:ss)" else "HAMR shuttles", f.cardioRaw, { v -> vm.update { it.copy(fitness=it.fitness.copy(cardioRaw=v)) } })
+        LabeledField("Next PFRA date", f.nextPfraDate, { v -> vm.update { it.copy(fitness = it.fitness.copy(nextPfraDate=v)) } })
+        PlannerCard { Text("Estimated PFRA total", fontWeight=FontWeight.Bold); Text(String.format("%.1f / 100", total), style=MaterialTheme.typography.headlineMedium); Text("Strength ${String.format("%.1f",strengthPts)} • Core ${String.format("%.1f",corePts)} • Cardio ${String.format("%.1f",cardioPts)} • WHtR ${String.format("%.1f",bodyPts)}", color=TextMuted) }
+        PlannerCard { Text("2 km walk reference", fontWeight=FontWeight.Bold); Text("Maximum time for ${f.age}-year-old ${f.sex.lowercase()}: ${PfraScoring.formatSeconds(PfraScoring.walkMaxSeconds(f.age,sex))}", color=TextMuted); Text("AFSPECWAR/EOD uses its separate chart and is not scored by the normal age/sex calculator.", color=Warn) }
     }
 }
 
@@ -326,30 +355,60 @@ private fun LifePlanningTool(vm: PlannerViewModel, modifier: Modifier) {
 }
 
 @Composable
-private fun HelpingResourcesTool(modifier: Modifier) {
-    val resources = listOf(
-        Triple("Emergency","911","Immediate danger or medical emergency."),
-        Triple("988 Suicide & Crisis Lifeline","988","Call or text for 24/7 crisis support in the United States."),
-        Triple("Military OneSource","800-342-9647","Confidential non-medical counseling, relocation, finances, spouse/family and other support."),
-        Triple("American Red Cross Hero Care","877-272-7337","Emergency communications and military family support."),
-        Triple("Chaplain","Contact local chapel / Command Post","Confidential spiritual and pastoral support; local numbers vary by installation."),
-        Triple("Sexual Assault Support","Contact installation SAPR/SARC","Use the current installation response line or official DAF resources."),
-        Triple("Family Advocacy / Helping Agencies","Contact local installation","Use the installation directory for current local services and hours.")
-    )
-    ToolBody(modifier,"Helping Resources","A routing guide, not a replacement for emergency or official helping systems"){
-        resources.forEach { (name,contact,detail)->PlannerCard{Text(name,fontWeight=FontWeight.Bold);Text(contact,color=AirBlue);Text(detail,color=TextMuted,modifier=Modifier.padding(top=4.dp))} }
-        PlannerCard { Text("Localize this",fontWeight=FontWeight.Bold);Text("Add installation-specific numbers as ordinary Notes if needed, but avoid documenting an Airman's private situation or clinical details in the planner.",color=TextMuted) }
+private fun HelpingResourcesTool(vm: PlannerViewModel, modifier: Modifier) {
+    var category by remember { mutableStateOf("Family") }
+    val categories = PlannerGuidance.helpingRoutes.map { it.category }.distinct()
+    val needsForCategory = PlannerGuidance.helpingRoutes.filter { it.category == category }
+    var need by remember(category) { mutableStateOf(needsForCategory.firstOrNull()?.need ?: "") }
+    val route = PlannerGuidance.helpingRoutes.firstOrNull { it.category == category && it.need == need }
+    var agency by remember(route) { mutableStateOf(route?.agencies?.firstOrNull() ?: "") }
+    val existing = vm.state.helpingContacts.firstOrNull { it.agency == agency }
+    var phone by remember(agency, existing) { mutableStateOf(existing?.phone ?: "") }
+    var email by remember(agency, existing) { mutableStateOf(existing?.email ?: "") }
+    var building by remember(agency, existing) { mutableStateOf(existing?.building ?: "") }
+    ToolBody(modifier,"Helping Hands","Answer the planner page-79 question and get possible starting points; the selected situation is not stored"){
+        PlannerCard { Text("If there is immediate danger or a medical emergency, use 911. For crisis support in the U.S., call or text 988.", fontWeight=FontWeight.Bold); Text("This questionnaire is a routing aid, not clinical advice or a report.", color=TextMuted) }
+        DropdownField("Area", category, categories, { it }, { category=it })
+        if(needsForCategory.isNotEmpty()) DropdownField("What do you need help with?", need, needsForCategory.map{it.need}, { it }, { need=it })
+        SectionTitle("Possible starting points")
+        route?.agencies?.forEach { a ->
+            val c=vm.state.helpingContacts.firstOrNull{it.agency==a}
+            PlannerCard(onClick={agency=a}) { Text(a,fontWeight=FontWeight.Bold); if(c!=null) Text(listOf(c.phone,c.email,c.building).filter{it.isNotBlank()}.joinToString(" • "),color=TextMuted) }
+        } ?: EmptyState("Choose a situation","Select an area and need to see possible helping agencies.")
+        if(agency.isNotBlank()) {
+            SectionTitle("Save local contact for $agency")
+            LabeledField("Phone",phone,{phone=it});LabeledField("E-mail",email,{email=it});LabeledField("Building #",building,{building=it})
+            Button(onClick={vm.update { st -> st.copy(helpingContacts = st.helpingContacts.filterNot{it.agency==agency}+HelpingContact(agency,phone,email,building)) }}){Text("Save local contact")}
+        }
     }
 }
 
 @Composable
 private fun FinancialReadinessTool(vm: PlannerViewModel, modifier: Modifier) {
     val f=vm.state.financial
-    val free=(f.monthlyTakeHome-f.essentials-f.debtPayments-f.savings).coerceAtLeast(0.0)
-    val fixedRatio=if(f.monthlyTakeHome>0)(f.essentials+f.debtPayments)/f.monthlyTakeHome else 0.0
-    ToolBody(modifier,"Financial Readiness","A simple readiness baseline — not financial advice"){
-        LabeledField("Monthly take-home",f.monthlyTakeHome.toString(),{v->v.toDoubleOrNull()?.let{n->vm.update{it.copy(financial=it.financial.copy(monthlyTakeHome=n))}}});LabeledField("Essential expenses",f.essentials.toString(),{v->v.toDoubleOrNull()?.let{n->vm.update{it.copy(financial=it.financial.copy(essentials=n))}}});LabeledField("Debt payments",f.debtPayments.toString(),{v->v.toDoubleOrNull()?.let{n->vm.update{it.copy(financial=it.financial.copy(debtPayments=n))}}});LabeledField("Monthly savings",f.savings.toString(),{v->v.toDoubleOrNull()?.let{n->vm.update{it.copy(financial=it.financial.copy(savings=n))}}});LabeledField("TSP contribution %",f.tspPercent.toString(),{v->v.toDoubleOrNull()?.let{n->vm.update{it.copy(financial=it.financial.copy(tspPercent=n))}}});LabeledField("Emergency fund (months)",f.emergencyFundMonths.toString(),{v->v.toDoubleOrNull()?.let{n->vm.update{it.copy(financial=it.financial.copy(emergencyFundMonths=n))}}})
-        PlannerCard { Text("Monthly picture",fontWeight=FontWeight.Bold);Text("Unallocated after recorded categories: $${String.format("%.0f",free)}",style=MaterialTheme.typography.titleLarge);Text("Essentials + debt: ${(fixedRatio*100).roundToInt()}% of take-home",color=TextMuted);Text("Emergency fund: ${String.format("%.1f",f.emergencyFundMonths)} months • TSP: ${String.format("%.1f",f.tspPercent)}%",color=TextMuted) }
+    val free=f.monthlyTakeHome-f.essentials-f.debtPayments-f.savings
+    val essentialMonths=if(f.essentials+f.debtPayments>0)f.emergencyFundBalance/(f.essentials+f.debtPayments) else f.emergencyFundMonths
+    val utilization=if(f.creditLimit>0)f.creditBalance/f.creditLimit*100 else 0.0
+    val age=vm.state.fitness.age
+    val tspLimit=when { age in 60..63 -> 35750.0; age>=50 -> 32500.0; else -> 24500.0 }
+    val tspRemaining=(tspLimit-f.annualTspContributed).coerceAtLeast(0.0)
+    val brsGovPct=when { f.tspPercent >= 5 -> 5.0; f.tspPercent >= 4 -> 4.5; f.tspPercent >= 3 -> 4.0; f.tspPercent >= 2 -> 3.0; f.tspPercent >= 1 -> 2.0; else -> 1.0 }
+    ToolBody(modifier,"Financial Readiness","Monthly cash-flow, emergency fund, credit utilization, TSP and BRS planning — not financial advice"){
+        LabeledField("Monthly take-home",f.monthlyTakeHome.toString(),{v->v.toDoubleOrNull()?.let{n->vm.update{it.copy(financial=it.financial.copy(monthlyTakeHome=n))}}})
+        LabeledField("Monthly gross/basic pay estimate",f.monthlyGrossPay.toString(),{v->v.toDoubleOrNull()?.let{n->vm.update{it.copy(financial=it.financial.copy(monthlyGrossPay=n))}}})
+        LabeledField("Essential expenses",f.essentials.toString(),{v->v.toDoubleOrNull()?.let{n->vm.update{it.copy(financial=it.financial.copy(essentials=n))}}})
+        LabeledField("Debt payments",f.debtPayments.toString(),{v->v.toDoubleOrNull()?.let{n->vm.update{it.copy(financial=it.financial.copy(debtPayments=n))}}})
+        LabeledField("Monthly savings",f.savings.toString(),{v->v.toDoubleOrNull()?.let{n->vm.update{it.copy(financial=it.financial.copy(savings=n))}}})
+        PlannerCard { Text("Monthly margin",fontWeight=FontWeight.Bold);Text("$${String.format("%.0f",free)}",style=MaterialTheme.typography.titleLarge);Text(if(free>=0)"Remaining after recorded expenses/savings" else "Recorded plan exceeds take-home by $${String.format("%.0f",-free)}",color=if(free>=0)TextMuted else Warn) }
+        SectionTitle("Emergency fund")
+        LabeledField("Emergency fund balance",f.emergencyFundBalance.toString(),{v->v.toDoubleOrNull()?.let{n->vm.update{it.copy(financial=it.financial.copy(emergencyFundBalance=n))}}})
+        PlannerCard { Text("${String.format("%.1f",essentialMonths)} months",fontWeight=FontWeight.Bold);Text("Common readiness target: roughly 3–6 months of essential expenses. Personal circumstances vary.",color=TextMuted) }
+        SectionTitle("Credit")
+        LabeledField("Revolving credit balance",f.creditBalance.toString(),{v->v.toDoubleOrNull()?.let{n->vm.update{it.copy(financial=it.financial.copy(creditBalance=n))}}});LabeledField("Total credit limit",f.creditLimit.toString(),{v->v.toDoubleOrNull()?.let{n->vm.update{it.copy(financial=it.financial.copy(creditLimit=n))}}})
+        PlannerCard { Text("Credit utilization ${String.format("%.1f",utilization)}%",fontWeight=FontWeight.Bold);Text("Under 30% is a common starting benchmark; lower utilization can be healthier for many borrowers.",color=TextMuted) }
+        SectionTitle("TSP / BRS")
+        LabeledField("TSP contribution %",f.tspPercent.toString(),{v->v.toDoubleOrNull()?.let{n->vm.update{it.copy(financial=it.financial.copy(tspPercent=n))}}});LabeledField("TSP contributed this year",f.annualTspContributed.toString(),{v->v.toDoubleOrNull()?.let{n->vm.update{it.copy(financial=it.financial.copy(annualTspContributed=n))}}})
+        PlannerCard { Text("2026 employee deferral room",fontWeight=FontWeight.Bold);Text("$${String.format("%.0f",tspRemaining)} remaining of $${String.format("%.0f",tspLimit)} age-based limit",color=TextMuted);Text("Estimated BRS government contribution at ${String.format("%.1f",f.tspPercent)}% member contribution: up to ${String.format("%.1f",brsGovPct)}% if otherwise eligible.",color=TextMuted) }
     }
 }
 
@@ -476,12 +535,17 @@ private fun GoalsTool(vm: PlannerViewModel, modifier: Modifier) {
 
 @Composable
 private fun SwotTool(vm: PlannerViewModel, modifier: Modifier) {
-    var strengths by remember{mutableStateOf("")};var weaknesses by remember{mutableStateOf("")};var opportunities by remember{mutableStateOf("")};var threats by remember{mutableStateOf("")};var nextAction by remember{mutableStateOf("")}
-    ToolBody(modifier,"SWOT Journal","A dated development exercise, not a permanent label"){
-        LabeledField("Strengths",strengths,{strengths=it},singleLine=false);LabeledField("Weaknesses / growth areas",weaknesses,{weaknesses=it},singleLine=false);LabeledField("Opportunities",opportunities,{opportunities=it},singleLine=false);LabeledField("Threats / barriers",threats,{threats=it},singleLine=false);LabeledField("Next action",nextAction,{nextAction=it})
-        Button(onClick={vm.update{it.copy(swotEntries=it.swotEntries+SwotEntry(date=LocalDate.now().toString(),strengths=strengths,weaknesses=weaknesses,opportunities=opportunities,threats=threats,nextAction=nextAction))};strengths="";weaknesses="";opportunities="";threats="";nextAction=""}){Text("Save SWOT")}
+    var scope by remember{mutableStateOf("Self")};var strengths by remember{mutableStateOf("")};var weaknesses by remember{mutableStateOf("")};var opportunities by remember{mutableStateOf("")};var threats by remember{mutableStateOf("")};var nextAction by remember{mutableStateOf("")};var target by remember{mutableStateOf("")}
+    ToolBody(modifier,"SWOT Analysis","Planner page 71: internal strengths/weaknesses and external opportunities/threats, converted into action"){
+        DropdownField("Scope",scope,listOf("Self","Work Center","Team","Program","Project"),{it},{scope=it})
+        PlannerGuidance.swotPrompts.forEach { (heading,prompts) ->
+            PlannerCard { Text(heading,fontWeight=FontWeight.Bold);Text(if(heading=="Strengths"||heading=="Weaknesses")"INTERNAL" else "EXTERNAL",color=SoftBlue);prompts.forEach{Text("• $it",color=TextMuted,style=MaterialTheme.typography.bodySmall)} }
+            when(heading){"Strengths"->LabeledField("Strengths",strengths,{strengths=it},singleLine=false);"Weaknesses"->LabeledField("Weaknesses",weaknesses,{weaknesses=it},singleLine=false);"Opportunities"->LabeledField("Opportunities",opportunities,{opportunities=it},singleLine=false);else->LabeledField("Threats",threats,{threats=it},singleLine=false)}
+        }
+        LabeledField("One next action",nextAction,{nextAction=it});LabeledField("Target date",target,{target=it})
+        Button(onClick={vm.update{it.copy(swotEntries=it.swotEntries+SwotEntry(date=LocalDate.now().toString(),scope=scope,strengths=strengths,weaknesses=weaknesses,opportunities=opportunities,threats=threats,nextAction=nextAction,targetDate=target))};strengths="";weaknesses="";opportunities="";threats="";nextAction="";target=""}){Text("Save SWOT")}
         SectionTitle("Past SWOT entries")
-        vm.state.swotEntries.sortedByDescending{it.date}.forEach{e->PlannerCard{Text(Dates.display(e.date),fontWeight=FontWeight.Bold);if(e.strengths.isNotBlank())Text("Strengths: ${e.strengths}",color=TextMuted);if(e.weaknesses.isNotBlank())Text("Growth: ${e.weaknesses}",color=TextMuted);if(e.opportunities.isNotBlank())Text("Opportunities: ${e.opportunities}",color=TextMuted);if(e.threats.isNotBlank())Text("Barriers: ${e.threats}",color=TextMuted);if(e.nextAction.isNotBlank())Text("Next: ${e.nextAction}",modifier=Modifier.padding(top=4.dp))}}
+        vm.state.swotEntries.sortedByDescending{it.date}.forEach{e->PlannerCard{Text("${e.scope} • ${Dates.display(e.date)}",fontWeight=FontWeight.Bold);if(e.strengths.isNotBlank())Text("Strengths: ${e.strengths}",color=TextMuted);if(e.weaknesses.isNotBlank())Text("Weaknesses: ${e.weaknesses}",color=TextMuted);if(e.opportunities.isNotBlank())Text("Opportunities: ${e.opportunities}",color=TextMuted);if(e.threats.isNotBlank())Text("Threats: ${e.threats}",color=TextMuted);if(e.nextAction.isNotBlank())Text("Next: ${e.nextAction}${e.targetDate.takeIf{it.isNotBlank()}?.let{" • ${Dates.display(it)}"}?:""}")}}
     }
 }
 
@@ -496,10 +560,23 @@ private fun AddAirmanTool(vm:PlannerViewModel,modifier:Modifier,onBack:()->Unit)
 
 @Composable
 private fun AddAccomplishmentTool(vm:PlannerViewModel,modifier:Modifier,onBack:()->Unit){
-    var action by remember{mutableStateOf("")};var impact by remember{mutableStateOf("")};var mga by remember{mutableStateOf(Mga.EXECUTING_MISSION)};var alq by remember{mutableStateOf("")};var level by remember{mutableStateOf("Work Center")};var date by remember{mutableStateOf(LocalDate.now().toString())};var memberId by remember{mutableStateOf("")}
+    var action by remember{mutableStateOf("")};var impact by remember{mutableStateOf("")};var result by remember{mutableStateOf("")};var evidence by remember{mutableStateOf("")};var challenge by remember{mutableStateOf("")};var mga by remember{mutableStateOf(Mga.EXECUTING_MISSION)};var alq by remember(mga){mutableStateOf(PlannerGuidance.alqs(mga).first().name)};var mile by remember(mga){mutableStateOf(PlannerGuidance.mileFocus(mga).first())};var level by remember{mutableStateOf("Work Center")};var date by remember{mutableStateOf(LocalDate.now().toString())};var memberId by remember{mutableStateOf("")}
     val people=listOf("" to "Self")+vm.state.team.map{it.id to "${it.grade.label} ${it.name}"}
-    ToolBody(modifier,"Add Accomplishment","Capture what happened, why it mattered, and where the impact landed"){
-        val sel=people.firstOrNull{it.first==memberId}?:people.first();DropdownField("For",sel,people,{it.second},{memberId=it.first});LabeledField("What did you/they do?",action,{action=it});LabeledField("Impact / result",impact,{impact=it},singleLine=false);DropdownField("MGA",mga,Mga.entries,{it.label},{mga=it});LabeledField("ALQ (optional)",alq,{alq=it});DropdownField("Impact level",level,listOf("Individual","Work Center","Flight","Squadron","Group","Wing","MAJCOM","DAF/Joint"),{it},{level=it});LabeledField("Date",date,{date=it});Button(enabled=action.isNotBlank(),onClick={vm.addAccomplishment(Accomplishment(date=date,action=action.trim(),impact=impact.trim(),mga=mga,alq=alq,impactLevel=level,linkedMemberId=memberId));onBack()},modifier=Modifier.fillMaxWidth()){Text("Save accomplishment")}
+    val alqs=PlannerGuidance.alqs(mga);val alqGuide=alqs.firstOrNull{it.name==alq}?:alqs.first();val mileOptions=PlannerGuidance.mileFocus(mga)
+    ToolBody(modifier,"Detailed Performance Capture","Planner pages 68–69 restored: MGA + ALQ + MILE lens + Action / Impact / Result"){
+        val sel=people.firstOrNull{it.first==memberId}?:people.first();DropdownField("For",sel,people,{it.second},{memberId=it.first});LabeledField("Date",date,{date=it})
+        DropdownField("Major Graded Area (MGA)",mga,Mga.entries,{it.label},{mga=it})
+        DropdownField("Airman Leadership Quality (ALQ)",alq,alqs.map{it.name},{it},{alq=it})
+        PlannerCard { Text(alqGuide.name,fontWeight=FontWeight.Bold);Text(alqGuide.definition,color=TextMuted) }
+        DropdownField("MGA / MILE focus",mile,mileOptions,{it},{mile=it})
+        DropdownField("Organizational impact",level,listOf("Individual","Work Center","Flight","Squadron","Group","Wing","MAJCOM","DAF/Joint"),{it},{level=it})
+        SectionTitle("AIR performance statement builder")
+        LabeledField("ACTION — What did you/they do?",action,{action=it},singleLine=false)
+        LabeledField("IMPACT — How did you/they do it and who/what was affected?",impact,{impact=it},singleLine=false)
+        LabeledField("RESULT — Why was it important?",result,{result=it},singleLine=false)
+        LabeledField("Evidence / metric — #, %, $, hours, readiness, inspections, customers, missions...",evidence,{evidence=it},singleLine=false)
+        LabeledField("Challenge / assistance needed",challenge,{challenge=it},singleLine=false)
+        Button(enabled=action.isNotBlank(),onClick={vm.addAccomplishment(Accomplishment(date=date,action=action.trim(),impact=impact.trim(),result=result.trim(),evidence=evidence.trim(),challenge=challenge.trim(),mga=mga,alq=alq,mileFocus=mile,impactLevel=level,linkedMemberId=memberId));onBack()},modifier=Modifier.fillMaxWidth()){Text("Save detailed accomplishment")}
     }
 }
 

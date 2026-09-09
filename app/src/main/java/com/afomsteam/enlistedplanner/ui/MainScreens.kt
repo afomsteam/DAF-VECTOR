@@ -163,7 +163,7 @@ fun CareerScreen(vm: PlannerViewModel, modifier: Modifier = Modifier, onOpen: (S
                 onOpen
             )
         }
-        item { SectionTitle("Recent accomplishments", "Capture impact throughout the year", "Add") { onOpen("tool:Add Accomplishment") } }
+        item { SectionTitle("Recent accomplishments", "Quick Capture stays fast; use Detailed when you want MGA/ALQ/AIR depth", "Detailed") { onOpen("tool:Add Accomplishment") } }
         if (s.accomplishments.isEmpty()) item { EmptyState("Nothing captured yet", "Capture meaningful work when it happens so evaluation and award season do not start from a blank page.") }
         items(s.accomplishments.sortedByDescending { it.date }.take(8), key = { it.id }) { a ->
             PlannerCard {

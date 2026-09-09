@@ -5,6 +5,7 @@ The acceptance rule for V2 Full is: **simplify navigation, not capability**.
 | Baseline capability | V2 Full location | Status |
 |---|---|---|
 | Daily dashboard / command center | Home | Restored + improved |
+| Calendar date entry | Shared across editable date fields | Restored as native date-picker UI |
 | Tasks / Today's 3 | Home / Capture | Restored |
 | Calendar / personal events | Home + Tools → Calendar | Restored |
 | Official enlisted-relevant planning calendar | Home + Tools → Calendar / Next Up | Restored; legacy officer clutter filtered |
@@ -12,14 +13,14 @@ The acceptance rule for V2 Full is: **simplify navigation, not capability**.
 | Notes | Capture + Tools → Notes | Restored |
 | Reminder center / reminder scheduler | Home → Needs Attention + local notifications | Restored as auto-generated signals + optional WorkManager daily notification; separate inbox intentionally removed |
 | Accomplishment capture | Capture + Career | Restored + improved |
-| MGA / ALQ evidence | Career | Restored |
+| MGA / ALQ evidence | Career → Detailed Performance Capture | Restored + guided AIR/MGA/ALQ/MILE workflow |
 | Quarter summary | Career | Merged; preserved |
 | Career / quarter PDF export | Career | Restored |
 | Promotion status | Career + Tools | Restored as analysis |
 | SrA / BTZ planning | Promotion analysis | Restored |
 | WAPS / PECD planning | Promotion analysis + signals | Restored as planning aid |
 | Evaluation / SCOD | Career + Tools | Restored |
-| Feedback milestones | Career + Lead + Home signals | Restored + improved |
+| Feedback milestones | Career + Lead + Home signals | Restored: recurring RegAF calculator = last SCOD + 6 months; initial cue separate |
 | Awards / recognition | Career + Lead | Restored |
 | Experience inventory | Career + Tools | Restored |
 | WAPS study plan | Develop + Tools | Restored |
@@ -27,13 +28,13 @@ The acceptance rule for V2 Full is: **simplify navigation, not capability**.
 | Development goals | Develop | Restored |
 | Upgrade training | Develop + Lead + Tools | Restored |
 | Qualifications | Develop + Lead + Tools | Restored |
-| SWOT journal | Develop + Tools | Restored |
+| SWOT journal | Develop + Tools | Restored + page-71 prompts + scope/action/target |
 | Comprehensive Airman Fitness | Develop + Tools → Whole Airman / CAF | Restored |
-| Financial readiness | Tools | Restored |
-| Fitness calculator / readiness | Tools → Fitness Readiness | Restored WHtR ratio + user-entered component-point rollup; verify authoritative points against current AFPC charts |
+| Financial readiness | Tools | Expanded: spending plan, emergency fund, utilization, TSP/BRS |
+| Fitness calculator / readiness | Tools → Fitness | Restored age/sex/raw-performance scoring from uploaded 2026 PFRA chart + WHtR + 2 km walk standard |
 | Life readiness | Tools | Restored |
-| Helping Hands | Tools → Helping Resources | Restored/consolidated support pathways |
-| Pro Hands / professional references | Tools → Pro Hands / Professional References | Restored as need-based professional reference map |
+| Helping Hands | Tools → Helping Hands | Restored page-79 questionnaire/resource routing + optional local contacts |
+| Professional resources | Tools → Professional Resources | Restored page-85 reference categories + official destinations |
 | Airman Compass | Airman Launchpad | Retired/merged intentionally |
 | Airman Launchpad | Tools + Home prompt | Restored + improved |
 | Team management | Lead | Restored under one shell |

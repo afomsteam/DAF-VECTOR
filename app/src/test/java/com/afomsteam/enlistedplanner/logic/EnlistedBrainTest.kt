@@ -1,6 +1,10 @@
 package com.afomsteam.enlistedplanner.logic
 
 import com.afomsteam.enlistedplanner.data.*
+import com.afomsteam.enlistedplanner.logic.EvaluationRules
+import com.afomsteam.enlistedplanner.logic.PfraEvent
+import com.afomsteam.enlistedplanner.logic.PfraScoring
+import com.afomsteam.enlistedplanner.logic.PfraSex
 import org.junit.Assert.*
 import org.junit.Test
 import java.time.LocalDate

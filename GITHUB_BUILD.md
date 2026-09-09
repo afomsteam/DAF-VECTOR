@@ -10,8 +10,8 @@
 6. If it did not start automatically, choose **Run workflow**.
 7. When the job is green, download the artifact named **Enlisted-Planner-V2-Full**.
 8. Extract the artifact. It contains:
-   - `Enlisted-Planner-V2-Full.apk`
-   - `Enlisted-Planner-V2-Full.apk.sha256`
+   - `Enlisted-Planner-V2-Full-v3.apk`
+   - `Enlisted-Planner-V2-Full-v3.apk.sha256`
 
 ## Build chain
 

@@ -1,37 +1,51 @@
-# Source and validation notes
+# Source and validation notes — V2 Full 2.1
 
 ## Baselines used
 
-- User-provided `Enlisted-Planner(4).apk` was treated as the capability baseline.
-- User-provided `Enlisted-Planner-V2.apk` was treated as the cleaner UX/navigation direction.
-- Embedded V2 calendar/reference JSON and V2 visual assets are retained in this repository.
+- User-provided original Enlisted Planner APK: capability baseline.
+- V2 shell: cleaner UX/navigation direction.
+- User-provided `2026_USAF_Digital_Planner_Updated(1).pdf`: source for the requested page-68/69 performance capture, page-71 SWOT, page-79 Helping Hands matrix and page-85 professional resources.
+- User-provided `PFRA Scoring Charts(1).pdf`: source for the standard USAF age/sex/event fitness scoring tables and WHtR scale.
 
-## Policy-sensitive logic
+## Feedback / evaluation
 
-Promotion/evaluation/fitness outputs are deliberately conservative planning aids. The user should verify controlling requirements against current official publications, myFSS and appropriate personnel channels.
+For RegAF planning, the recurring feedback calculator uses the planner-owner requested rule:
 
-### Promotion
+**last grade SCOD + 6 calendar months**
 
-The RegAF promotion rules layer includes junior-enlisted timing estimates, SrA/BTZ planning, WAPS/board cues, selected-for-promotion tracking, six-year-enlistee accelerated A1C planning, and the TSgt skill-level distinction between competing/testing and promotion. AFR/ANG records are not falsely treated as RegAF WAPS cases.
+The current grade-SCOD map remains:
+- AB/Amn/A1C/SrA: 31 Mar
+- SSgt: 31 Jan
+- TSgt: 30 Nov
+- MSgt: 30 Sep
+- SMSgt: 31 Jul
+- CMSgt: 31 May
 
-### Evaluations and feedback
+An initial-supervision cue is kept separately. AFR/ANG records are deliberately marked for status-specific cycle verification.
 
-For RegAF planning, the app uses grade-based SCOD awareness. For AFR/ANG members, the UI deliberately says to verify the member's status-specific ARC cycle because AGR/Stat Tour/Non-AGR rules can differ and the app does not currently store every status discriminator.
+## Fitness
 
-Feedback planning uses recorded supervision and feedback dates to create cues for the initial 60-day period, the junior-Airman 180-day cadence when applicable, projected midterm, and end-of-reporting-period window. CROs, commander/supervisor actions and official exceptions still require verification.
+`logic/FitnessScoring.kt` contains the standard USAF tables transcribed from the uploaded PFRA scoring chart effective 1 Mar 2026. Known chart points were smoke-tested, including WHtR, push-ups, 2-mile run, HAMR and 2 km walk standards. The app does not route AFSPECWAR/EOD through standard scoring because the source includes a separate table.
 
-### Fitness
+## Helping Hands / Professional Resources / Performance / SWOT
 
-The tool computes the user's WHtR ratio and totals the component points the user enters. It does not hard-code every age/sex/event scoring table; users should use the current official AFPC scoring chart for authoritative component points.
+- `PlannerGuidance.helpingIssues` implements the page-79 concern-to-agency dot matrix. Concern selections are ephemeral; optional agency contact details may be stored.
+- `PlannerGuidance.professionalReferences` uses the page-85 professional-reference categories. A short list of stable/high-value official destinations is provided as external-browser links.
+- Detailed Performance Capture implements the page-68 AIR model (Action, Impact, Result), the 4 MGAs and 10 ALQs, plus page-69 MGA/MILE focus prompts and challenge/follow-through capture.
+- SWOT uses the page-71 internal/external and helpful/harmful structure and prompt questions.
+
+## Financial readiness web research
+
+The calculator's current planning assumptions are documented in the source/UI and were checked against official/current public sources:
+- Military OneSource: emergency funds generally target 3–6 months of expenses; credit utilization below 30% is a useful starting point.
+- IRS 2026 elective-deferral limit: $24,500; standard 50+ catch-up $8,000; age 60–63 catch-up $11,250.
+- DoD BRS guide: 1% automatic service contribution plus matching that reaches 4% at a 5% member contribution, for a maximum 5% service contribution when eligible.
 
 ## Local validation performed
 
-- Required feature routes/privacy boundary: `python3 scripts/verify_source.py` → PASS.
-- Core Kotlin compile: `Models.kt` + `EnlistedBrain.kt` → PASS (warnings only).
-- XML resources → parsed successfully.
-- Embedded JSON data → parsed successfully.
-- GitHub Actions YAML → parsed successfully.
-- Full Kotlin tree was parser-screened without Android/Compose classpaths; no obvious parser/unclosed-token errors were found. Android/Compose unresolved references are expected in that limited check.
-- Sample supervisor-state signal execution produced the expected categories of cross-module alerts.
+- `python3 scripts/verify_source.py` → PASS.
+- Core Kotlin compile (`Models.kt`, `EnlistedBrain.kt`, `FitnessScoring.kt`, `PlannerGuidance.kt`) → PASS.
+- Core smoke execution for feedback/PFRA/guidance → PASS.
+- GitHub Actions remains the full Android/Compose integration compile and APK assembly environment.
 
-A complete Android build still requires Android SDK/Gradle/Maven dependencies; the included GitHub Action performs the actual Android assembly.
+Policy-sensitive outputs remain planning aids. Current official DAF publications, myFSS/FSS/CSS/MPF, commanders and official records are controlling.

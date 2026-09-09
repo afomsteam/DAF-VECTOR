@@ -13,11 +13,13 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.afomsteam.enlistedplanner.data.BrainSignal
 import com.afomsteam.enlistedplanner.data.Severity
+import java.time.LocalDate
 
 @Composable
 fun SectionTitle(title: String, subtitle: String? = null, action: String? = null, onAction: (() -> Unit)? = null) {
@@ -88,12 +90,26 @@ fun EmptyState(title: String, body: String) {
 
 @Composable
 fun LabeledField(label: String, value: String, onValueChange: (String) -> Unit, placeholder: String = "", singleLine: Boolean = true, modifier: Modifier = Modifier.fillMaxWidth()) {
+    val context = LocalContext.current
+    val lower = label.lowercase()
+    val dateLike = lower.contains("date") || lower.contains("scod") || lower.contains("pfra") ||
+        lower.contains("expiration") || lower.contains("suspense") || lower.contains("feedback") ||
+        lower.contains("supervision start") || lower.contains("completion") || lower == "start" || lower == "end"
+    fun openCalendar() {
+        val initial = runCatching { LocalDate.parse(value) }.getOrElse { LocalDate.now() }
+        android.app.DatePickerDialog(
+            context,
+            { _, year, month, day -> onValueChange(LocalDate.of(year, month + 1, day).toString()) },
+            initial.year, initial.monthValue - 1, initial.dayOfMonth
+        ).show()
+    }
     OutlinedTextField(
         value = value,
         onValueChange = onValueChange,
         label = { Text(label) },
         placeholder = { if (placeholder.isNotBlank()) Text(placeholder) },
         singleLine = singleLine,
+        trailingIcon = if (dateLike) ({ TextButton(onClick = { openCalendar() }) { Text("📅") } }) else null,
         modifier = modifier,
         colors = OutlinedTextFieldDefaults.colors(
             focusedBorderColor = AirBlue,

@@ -53,7 +53,10 @@ object PdfExporter {
             group.forEach { a ->
                 line("• ${a.action}", 10f, false, 8f)
                 if (a.impact.isNotBlank()) line("  Impact: ${a.impact}", 9f, false, 12f)
-                line("  ${a.date} • ${a.impactLevel}${a.alq.takeIf { it.isNotBlank() }?.let { " • $it" } ?: ""}", 8f, false, 12f)
+                if (a.result.isNotBlank()) line("  Result: ${a.result}", 9f, false, 12f)
+                if (a.evidence.isNotBlank()) line("  Evidence: ${a.evidence}", 9f, false, 12f)
+                if (a.challenge.isNotBlank()) line("  Challenge/assistance: ${a.challenge}", 9f, false, 12f)
+                line("  ${a.date} • ${a.impactLevel}${a.alq.takeIf { it.isNotBlank() }?.let { " • $it" } ?: ""}${a.mileFocus.takeIf { it.isNotBlank() }?.let { " • $it" } ?: ""}", 8f, false, 12f)
             }
         }
         y += 8f

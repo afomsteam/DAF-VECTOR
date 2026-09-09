@@ -12,8 +12,8 @@ android {
         applicationId = "com.afomsteam.enlistedplanner"
         minSdk = 26
         targetSdk = 35
-        versionCode = 20100
-        versionName = "2.1.0-full"
+        versionCode = 20101
+        versionName = "2.1.1-full"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true

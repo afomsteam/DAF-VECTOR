@@ -240,30 +240,30 @@ object EvaluationRules {
         return date
     }
 
+    fun lastScod(grade: Grade, today: LocalDate = LocalDate.now()): LocalDate {
+        val md = scodByGrade.getValue(grade)
+        var date = md.atYear(today.year)
+        if (date.isAfter(today)) date = md.atYear(today.year - 1)
+        return date
+    }
+
+    fun feedbackDueFromLastScod(grade: Grade, today: LocalDate = LocalDate.now()): LocalDate =
+        lastScod(grade, today).plusMonths(6)
+
+    fun feedbackDueFromScod(scod: LocalDate): LocalDate = scod.plusMonths(6)
+
     fun nextFeedbackPlanningDate(member: TeamMember, today: LocalDate = LocalDate.now()): Pair<LocalDate?, String> {
         val supervision = Dates.parse(member.supervisionStartDate)
         val last = Dates.parse(member.lastFeedbackDate)
-        if (supervision == null) {
-            return if (last != null) last.plusDays(180) to "Enter supervision start date to calculate the formal cycle; 180-day review cue shown temporarily"
-            else null to "Enter supervision start date to calculate initial and midterm feedback planning markers"
+        if (supervision != null && (last == null || last.isBefore(supervision))) {
+            val initialDue = supervision.plusDays(60)
+            if (!initialDue.isBefore(today)) return initialDue to "Initial feedback planning cue — within 60 calendar days of supervision start"
         }
-
-        val initialDue = supervision.plusDays(60)
-        if (last == null || last.isBefore(initialDue.minusDays(14))) return initialDue to "Initial feedback — within first 60 calendar days of supervision"
-
-        val dis = Dates.parse(member.dateEnteredService)
-        val under20Months = dis?.let { Period.between(it, today).toTotalMonths() < 20 } == true
-        if (member.grade.order <= Grade.SRA.order && under20Months) {
-            return last.plusDays(180) to "Junior Airman midterm planning — every 180 days after initial feedback until an evaluation/CRO, when applicable"
+        if (member.component == Component.REGAF) {
+            val scod = lastScod(member.grade, today)
+            return feedbackDueFromScod(scod) to "Midterm feedback calculator — last SCOD plus 6 months"
         }
-
-        val projectedScod = nextScod(member.grade, supervision)
-        val totalDays = ChronoUnit.DAYS.between(supervision, projectedScod)
-        val midterm = if (totalDays < 150) projectedScod.minusDays(60) else supervision.plusDays(totalDays / 2)
-        if (last.isBefore(midterm.minusDays(14))) return midterm to "Midterm feedback — midway between supervision start and projected evaluation closeout"
-
-        val endPeriodDue = projectedScod.plusDays(60)
-        return endPeriodDue to "End-of-reporting-period feedback — within 60 days after evaluation closeout"
+        return last?.plusMonths(6) to "ARC planning cue from the last recorded feedback; verify status-specific evaluation/feedback requirements"
     }
 }
 

@@ -1,4 +1,4 @@
-# Enlisted Planner V2 Full
+# Enlisted Planner V2 Full 2.1
 
 **V2 Full = the cleaner V2 user experience with the enlisted brain restored underneath it.**
 
@@ -21,7 +21,7 @@ This repository is a native Android / Kotlin / Jetpack Compose app. It is local-
 - WAPS/board promotion review cues
 - six-year-enlistee accelerated A1C planning
 - RegAF SCOD awareness; ARC members are flagged for status-specific verification
-- initial, junior-Airman recurring, midterm and end-of-reporting-period feedback planning
+- recurring RegAF feedback planning based on last grade SCOD + 6 months, plus separate initial-supervision cues
 - upgrade-training target dates
 - qualification expirations
 - troop promotion selection / projected promotion information
@@ -41,9 +41,9 @@ Promotion/evaluation calculations are **planning aids, not official determinatio
 
 The app does not blindly apply RegAF WAPS or SCOD assumptions to AFR/ANG members. ARC records remain usable, but status/component-specific rules are explicitly marked for verification.
 
-## Fitness safeguard
+## Fitness calculator
 
-The Fitness tool calculates WHtR from the entered height and waist and can total the component points the user enters. Users should take cardio/strength/core/body-composition points from the current official AFPC scoring chart rather than treating embedded values as authoritative.
+The standard USAF Fitness tool now contains the age/sex/event scoring tables transcribed from the user-provided **Final USAF Physical Fitness Readiness Assessment Scoring (Effective 1 Mar 26)** chart. It calculates WHtR and body-composition points, push-up/hand-release push-up points, sit-up/cross-leg reverse crunch/forearm plank points, 2-mile/HAMR points, and the age/sex 2 km walk maximum-time standard from raw entered performance. AFSPECWAR/EOD is intentionally not scored through the standard table because the source provides a separate chart for that population.
 
 ## Privacy
 
@@ -61,7 +61,7 @@ Use:
 
 The workflow uses Node-24-capable GitHub Actions, Java 17, Gradle 8.9, `android-actions/setup-android@v4` for Android SDK 35, runs the source parity/privacy check, builds the debug APK and creates:
 
-`Enlisted-Planner-V2-Full.apk`
+`Enlisted-Planner-V2-Full-v3.apk`
 
 GitHub uploads an artifact named:
 
@@ -69,7 +69,7 @@ GitHub uploads an artifact named:
 
 The artifact also contains a SHA-256 checksum.
 
-See **UPLOAD_TO_GITHUB.md** for exact steps.
+See **UPLOAD_TO_GITHUB.md** for exact steps and **V2_FULL_2_1_CHANGES.md** for this feedback-driven restoration.
 
 ## Optional release engineering build
 
@@ -79,6 +79,6 @@ See **UPLOAD_TO_GITHUB.md** for exact steps.
 
 - `scripts/verify_source.py` checks the required capability routes and local-first privacy boundary.
 - All bundled XML, JSON and GitHub workflow YAML files were parsed successfully.
-- `Models.kt` + `EnlistedBrain.kt` compiled successfully with the installed Kotlin compiler.
-- A sample supervisor-state signal test produced feedback, upgrade-training, qualification, commitment, program and single-point capability alerts.
+- `Models.kt` + `EnlistedBrain.kt` + `FitnessScoring.kt` + `PlannerGuidance.kt` compiled successfully with the installed Kotlin compiler.
+- Core smoke tests passed for SCOD + 6-month feedback dates and representative PFRA/WHtR chart values; supervisor-state signal logic remains covered by unit tests.
 - Full Android assembly cannot be completed in this environment because the Android SDK/Gradle dependency set is not installed here; the included GitHub Actions workflow is the intended full Android compile check.

@@ -72,8 +72,12 @@ data class Accomplishment(
     val date: String,
     val action: String,
     val impact: String = "",
+    val result: String = "",
+    val evidence: String = "",
+    val challenge: String = "",
     val mga: Mga = Mga.EXECUTING_MISSION,
     val alq: String = "",
+    val mileFocus: String = "",
     val impactLevel: String = "Work Center",
     val linkedMemberId: String = ""
 )
@@ -168,21 +172,43 @@ data class WholeAirmanCheck(
 
 data class FinancialReadiness(
     val monthlyTakeHome: Double = 0.0,
+    val monthlyGrossPay: Double = 0.0,
     val essentials: Double = 0.0,
     val debtPayments: Double = 0.0,
     val savings: Double = 0.0,
     val tspPercent: Double = 0.0,
-    val emergencyFundMonths: Double = 0.0
+    val emergencyFundBalance: Double = 0.0,
+    val emergencyFundMonths: Double = 0.0,
+    val creditBalance: Double = 0.0,
+    val creditLimit: Double = 0.0,
+    val annualTspContributed: Double = 0.0
 )
 
 data class FitnessReadiness(
+    val age: Int = 30,
+    val sex: String = "Male",
     val heightInches: Double = 0.0,
     val waistInches: Double = 0.0,
+    val strengthEvent: String = "Push-up",
+    val strengthRaw: String = "",
+    val coreEvent: String = "Sit-up",
+    val coreRaw: String = "",
+    val cardioEvent: String = "2-mile run",
+    val cardioRaw: String = "",
     val cardioPoints: Double = 0.0,
     val strengthPoints: Double = 0.0,
     val corePoints: Double = 0.0,
     val bodyCompositionPoints: Double = 0.0,
     val nextPfraDate: String = ""
+)
+
+
+
+data class HelpingContact(
+    val agency: String,
+    val phone: String = "",
+    val email: String = "",
+    val building: String = ""
 )
 
 data class LifePlan(
@@ -245,11 +271,13 @@ data class ExperienceItem(
 data class SwotEntry(
     val id: String = UUID.randomUUID().toString(),
     val date: String,
+    val scope: String = "Self",
     val strengths: String = "",
     val weaknesses: String = "",
     val opportunities: String = "",
     val threats: String = "",
-    val nextAction: String = ""
+    val nextAction: String = "",
+    val targetDate: String = ""
 )
 
 data class ProjectItem(
@@ -288,6 +316,7 @@ data class PlannerState(
     val recognition: List<RecognitionItem> = emptyList(),
     val criticalRoles: List<CriticalRole> = emptyList(),
     val wholeAirmanChecks: List<WholeAirmanCheck> = emptyList(),
+    val helpingContacts: List<HelpingContact> = emptyList(),
     val financial: FinancialReadiness = FinancialReadiness(),
     val fitness: FitnessReadiness = FitnessReadiness(),
     val lifePlans: List<LifePlan> = emptyList(),

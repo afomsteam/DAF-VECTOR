@@ -112,7 +112,7 @@ private fun SearchScreen(vm: PlannerViewModel, modifier: Modifier, onOpen: (Stri
             vm.state.team.filter { (it.name + " " + it.afsc + " " + it.dutyTitle).lowercase().contains(q) }.forEach { add("${it.grade.label} ${it.name} — Airman" to "member:${it.id}") }
             toolNames.filter { it.lowercase().contains(q) }.forEach { add("$it — Tool" to if (it == "Airman Launchpad") "launchpad" else "tool:$it") }
             vm.state.tasks.filter { it.title.lowercase().contains(q) }.forEach { add("${it.title} — Task" to "tool:Tasks") }
-            vm.state.accomplishments.filter { (it.action + it.impact).lowercase().contains(q) }.forEach { add("${it.action} — Accomplishment" to "tool:Quarter Summary") }
+            vm.state.accomplishments.filter { (it.action + " " + it.impact + " " + it.result + " " + it.evidence + " " + it.challenge + " " + it.alq + " " + it.mileFocus).lowercase().contains(q) }.forEach { add("${it.action} — Accomplishment" to "tool:Quarter Summary") }
             vm.state.notes.filter { (it.title + it.body).lowercase().contains(q) }.forEach { add("${it.title} — Note" to "tool:Notes") }
         }
     }.take(30)
